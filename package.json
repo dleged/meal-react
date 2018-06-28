@@ -1,0 +1,7 @@
+{
+  "name": "meal-react",
+  "version": "1.0.0",
+  "description": "Simple create react application, quickly increase page",
+  "main": "index.js",
+  "license": "MIT"
+}
