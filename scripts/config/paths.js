@@ -38,7 +38,18 @@ function chunkList(path,pattern){
 }
 
 const envPublicUrl = process.env.PUBLIC_URL;
-const getPublicUrl = appPackageJson => envPublicUrl || require(appPackageJson).homepage || "/";
+const getPublicUrl = appPackageJson =>{
+	let webpackrc = fs.exitSync(appPackageJson) && require(appPackageJson).webpackrc;
+	let publicPath;
+	if(publicPath = webpackrc.publicPath){
+		if(!publicPath.endWith('/')){
+			 publicPath = publicPath + '/';
+		}
+	}else{
+		publicPath = '/'
+	}
+	return publicPath;
+};
 
 module.exports = {
 	appDirectory,
@@ -50,5 +61,5 @@ module.exports = {
   appPackageJson: resolvePath('package.json'),
 	yarnLockFile: resolvePath('yarn.lock'),
   appNodeModules: resolvePath('node_modules'),
-  publicUrl: getPublicUrl(resolvePath('package.json'))
+  publicPath: getPublicPath(resolvePath('package.json')),//上线资源地址{dev: ...,pro: ...}
 };

@@ -5,8 +5,14 @@
   "description": "Simple create react application, quickly increase page",
   "main": "index.js",
   "license": "MIT",
+  "webpackrc": {
+    "entry": "index.js"
+  },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
     "chalk": "^2.4.1",
-    "ice-scripts": "^1.5.4"
+    "ice-scripts": "^1.5.4",
+    "react": "^16.4.1"
   }
 }
