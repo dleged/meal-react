@@ -7,6 +7,7 @@
 const {realpathSync,readdirSync,statSync} = require('fs');
 const {resolve,join} = require('path');
 const chalk = require('chalk');
+const fs = require('fs');
 const appDirectory = realpathSync(process.cwd());
 
 function resolvePath(relativePath){
@@ -37,9 +38,8 @@ function chunkList(path,pattern){
 	return fileResults;
 }
 
-const envPublicUrl = process.env.PUBLIC_URL;
-const getPublicUrl = appPackageJson =>{
-	let webpackrc = fs.exitSync(appPackageJson) && require(appPackageJson).webpackrc;
+const getPublicPath = appPackageJson =>{
+	let webpackrc = fs.existsSync(appPackageJson) && require(appPackageJson).webpackrc;
 	let publicPath;
 	if(publicPath = webpackrc.publicPath){
 		if(!publicPath.endWith('/')){
