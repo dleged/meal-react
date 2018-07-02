@@ -5,17 +5,24 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 
-module.exports = (cwd) => {
-	cwd = cwd || process.cwd();
+let entry = {};
+paths.appJsList.forEach((item)=>{
+	console.log(item);
+   entry[item.name] = [
+       require.resolve('./polyfills'),
+       item.path
+   ];
+});
+
+module.exports = () => {
+	let cwd = process.cwd();
 	let pckDirectory = fs.realpathSync(cwd);
 	let pckFilePath = path.resolve(pckDirectory,'package.json');
 	let pckJson = require(pckFilePath);
-	let webpackrc;
-	if(webpackrc = pckJson.webpackrc){
-		let entry;
-		if(webpackrc && webpackrc.entry){
-			console.log('加载 package.json中的配置entry');
-			return entry = webpackrc.entry;
-		}
+	let webpackrc = pckJson.webpackrc || null;
+	if(webpackrc && webpackrc.entry){
+		console.log(chalk.blue('加载 package.json中的配置entry'));
+		entry = webpackrc.entry;
 	}
+	return entry;
 }

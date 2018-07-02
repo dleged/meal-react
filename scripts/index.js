@@ -1,3 +1,7 @@
 // const path = require('./config/paths');
-const entry = require('./config/rules');
-console.log(entry());
+const fs = require('fs');
+const path = require('path');
+const result = require('./config/entry')();
+
+
+fs.writeFileSync(path.resolve(__dirname,'result.js'),JSON.stringify(result));
