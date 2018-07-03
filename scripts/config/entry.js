@@ -7,7 +7,6 @@ const chalk = require('chalk');
 
 let entry = {};
 paths.appJsList.forEach((item)=>{
-	console.log(item);
    entry[item.name] = [
        require.resolve('./polyfills'),
        item.path

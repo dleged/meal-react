@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const autoprefixer = require('autoprefixer');
 const paths = require('./paths');
-const sourceMap = {sourceMap: true};
+const deepAssign = require('deep-assign');
 const URL_LOADER_LIMIT = 8192;
 
 function getBabelConfig(){
@@ -22,7 +22,7 @@ function getBabelConfig(){
 				}
 			},
 			require.resolve('@babel/preset-react'),
-      [require.resolve('@babel/preset-stage-0'), { decoratorsLegacy: true }],
+      [require.resolve('@babel/preset-stage-0'), {options: {decoratorsLegacy: true }}],
 		],
 		dev: {
 			development: {
@@ -75,17 +75,9 @@ function withCssHotLoader(loaders){
 function withPostcss(){
 	let postcss = {
 		plugins: [
-	    autoprefixer({
-	      browsers: [
-	        'last 2 versions',
-	        'Firefox ESR',
-	        '> 1%',
-	        'ie >= 9',
-	        'iOS >= 8',
-	        'Android >= 4',
-	      ]
-	    })
-	  ]
+        require('precss'),
+        require('autoprefixer')
+    ]
 	}
 	let cwd = process.cwd();
 	let postcssFilePath = path.resolve(cwd,'postcss.config.js');
@@ -98,7 +90,7 @@ function withPostcss(){
 
 //引入reules 默认loader
 const loaderArray = ['babel-loader','sass-loader','less-loader','postcss-loader'
-			,'css-loader','css-hot-loader','url-loader']
+			,'css-loader','css-hot-loader','url-loader','style-loader']
 let LOADERS = (function(loaderArray){
 	let loadersJson = {};
 	loaderArray.forEach((loader) => {
@@ -107,26 +99,27 @@ let LOADERS = (function(loaderArray){
 	return loadersJson;
 })(loaderArray)
 
-module.exports = (rules) => {
+module.exports = () => {
 	let setRules = [
 		{
 			test: /\.(scss|sass)$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
+				LOADERS['STYLE_LOADER'],
 				{
 					loader: LOADERS['CSS_LOADER'],
 					options: {
-						sourceMap
+						sourceMap: true
 					}
 				},
 				{
 					loader: LOADERS['POSTCSS_LOADER'],
-					options: Object.assign(sourceMap,withPostcss())
+					options: Object.assign({sourceMap: true},withPostcss())
 				},
 				{
 					loader: LOADERS['SASS_LOADER'],
 					options: {
-						sourceMap
+						sourceMap: true
 					}
 				}
 			])
@@ -135,20 +128,21 @@ module.exports = (rules) => {
 			test: /\.less$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
+					LOADERS['STYLE_LOADER'],
 					{
 						loader: LOADERS['CSS_LOADER'],
 						options: {
-							sourceMap
+							sourceMap: true
 						}
 					},
 					{
 						loader: LOADERS['POSTCSS_LOADER'],
-						options: Object.assign(sourceMap,withPostcss())
+						options: Object.assign({sourceMap: true},withPostcss())
 					},
 					{
 						loader: LOADERS['LESS_LOADER'],
 						options: {
-							sourceMap
+							sourceMap: true
 						}
 					}
 				])
@@ -157,15 +151,16 @@ module.exports = (rules) => {
 			test: /\.css$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
+				LOADERS['STYLE_LOADER'],
 				{
 					loader: LOADERS['CSS_LOADER'],
 					options: {
-						sourceMap
+						sourceMap: true
 					}
 				},
 				{
 					loader: LOADERS['POSTCSS_LOADER'],
-					options: Object.assign(sourceMap,withPostcss())
+					options: Object.assign({sourceMap: true},withPostcss())
 				}
 			])
 		},
@@ -176,9 +171,10 @@ module.exports = (rules) => {
 			exclude: paths.appNodeModules,
 			use: {
 				loader: LOADERS['BABEL_LOADER'],
-				options: {
-					babel: getBabelConfig()
-				}
+				// options: {
+				// 	presets: getBabelConfig().presets,
+				// 	dev: getBabelConfig().presets
+				// }
 			}
 		},
 		// extra url loader usage
@@ -227,6 +223,5 @@ module.exports = (rules) => {
       },
     }
 	]
-	setRules = setRules ? deepAssign.assign({},setRules) : setRules;
 	return setRules;
 }

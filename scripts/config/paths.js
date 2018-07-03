@@ -15,7 +15,7 @@ function resolvePath(relativePath){
 }
 
 let appHtmlList = chunkList(resolvePath('public'),"(.+)\\.+(html|htm)$");//多页面
-let appJsList = chunkList(resolvePath('src/pages'),"(.+)\\.+(js|jsx)$");
+let appJsList = chunkList(resolvePath('src/pages'),"(.+)\\.+(js|jsx|ts)$");
 
 function chunkList(path,pattern){
 		let fileResults = [];
@@ -40,6 +40,7 @@ function chunkList(path,pattern){
 const getPublicPath = appPackageJson =>{
 	let webpackrc = fs.existsSync(appPackageJson) && require(appPackageJson).webpackrc;
 	let publicPath;
+
 	if(webpackrc && webpackrc.publicPath){
 		publicPath = webpackrc.publicPath;
 		if(!publicPath.endWith('/')){
