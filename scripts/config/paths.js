@@ -30,8 +30,10 @@ let appJsList = [{name: 'index',path: resolve(process.cwd(),'src/index.js')}]
 function chunkList(path,pattern){
 		let fileResults = [];
 		let files = readdirSync(path);//读取path路径下的文件夹和文件;
+		console.log(files);
 		let reg = new RegExp(pattern);
 		files.forEach(fileName => {
+			if(fileName == 'components') return;//过滤掉pages下作为组件目录的components文件夹
 			//如果是文件夹，则继续递归遍历；
 			let filePath = join(path,fileName);
 			let stat = statSync(filePath);
