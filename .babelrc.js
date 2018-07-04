@@ -1,14 +1,19 @@
-module.exports = {
-  plugins: [
+{
+  "plugins": [
+    ["import",{"libraryName": "antd", "style": true}],
     [
-      'transform-es2015-modules-commonjs',
-      'babel-plugin-transform-react-jsx',
-      'babel-plugin-module-resolver',
+      "babel-plugin-module-resolver",
       {
-        alias: {
-          components: './src/components',
+        "alias": {
+          "components": "./src/components",
         }
       }
     ]
-  ]
-};
+  ],
+  "presets": ["react", "es2015"],
+  "env": {
+      "development" : {
+        "compact": false
+      }
+    }
+}

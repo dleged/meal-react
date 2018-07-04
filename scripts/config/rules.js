@@ -112,7 +112,6 @@ module.exports = () => {
 		},
 		{
 			test: /\.(scss|sass)$/,
-			include: paths.appSrc,
 			use: withCssHotLoader([
 				LOADERS['STYLE_LOADER'],
 				{
@@ -135,7 +134,6 @@ module.exports = () => {
 		},
 		{
 			test: /\.less$/,
-			include: paths.appSrc,
 			use: withCssHotLoader([
 					LOADERS['STYLE_LOADER'],
 					{
@@ -156,33 +154,25 @@ module.exports = () => {
 					}
 				])
 		},
-		{
-			test: /\.css$/,
-			include: paths.appSrc,
-			use: withCssHotLoader([
-				LOADERS['STYLE_LOADER'],
-				{
-					loader: LOADERS['CSS_LOADER'],
-					options: {
-						sourceMap: true
-					}
-				},
-				{
-					loader: LOADERS['POSTCSS_LOADER'],
-					options: Object.assign({sourceMap: true},withPostcss())
-				}
-			])
-		},
+    {
+      test: /\.css$/,
+      use: [
+        LOADERS['STYLE_LOADER'],
+        //require.resolve('style-loader'),
+        {
+          loader:  LOADERS['CSS_LOADER'],
+          options: {
+            sourceMap: true,
+            importLoaders: 1,
+          },
+        },
+      ],
+    },
 		{
 			test: /\.(js|jsx|ts)$/,
 		  enforce: 'pre',
-			include: paths.appSrc,
-			exclude: paths.appNodeModules,
 			use: {
-				loader: LOADERS['BABEL_LOADER'],
-				query: {
-          presets: ['react', 'es2015']
-        }
+        loader: LOADERS['BABEL_LOADER']
 			}
 		},
 		// extra url loader usage
