@@ -7,10 +7,11 @@ const chalk = require('chalk');
 
 let entry = {};
 paths.appJsList.forEach((item)=>{
-   entry[item.name] = [
-       require.resolve('./polyfills'),
-       item.path
-   ];
+  //验证存在与html同名的javascript文件
+    entry[item.name] = [
+        require.resolve('./polyfills'),
+        item.path
+    ];
 });
 
 module.exports = () => {

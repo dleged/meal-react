@@ -89,7 +89,7 @@ function withPostcss(){
 
 
 //引入reules 默认loader
-const loaderArray = ['babel-loader','sass-loader','less-loader','postcss-loader'
+const loaderArray = ['html-loader','babel-loader','sass-loader','less-loader','postcss-loader'
 			,'css-loader','css-hot-loader','url-loader','style-loader']
 let LOADERS = (function(loaderArray){
 	let loadersJson = {};
@@ -101,6 +101,15 @@ let LOADERS = (function(loaderArray){
 
 module.exports = () => {
 	let setRules = [
+		{
+		  test: /\.(html|htm)$/,
+		  use: {
+		    loader: LOADERS['HTML_LOADER'],
+		    options: {
+		      attrs: [':data-src']
+		    }
+		  }
+		},
 		{
 			test: /\.(scss|sass)$/,
 			include: paths.appSrc,
@@ -171,10 +180,9 @@ module.exports = () => {
 			exclude: paths.appNodeModules,
 			use: {
 				loader: LOADERS['BABEL_LOADER'],
-				// options: {
-				// 	presets: getBabelConfig().presets,
-				// 	dev: getBabelConfig().presets
-				// }
+				query: {
+          presets: ['react', 'es2015']
+        }
 			}
 		},
 		// extra url loader usage

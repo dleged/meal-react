@@ -14,8 +14,18 @@ function resolvePath(relativePath){
 	return resolve(appRootDirectory,relativePath);
 }
 
-let appHtmlList = chunkList(resolvePath('public'),"(.+)\\.+(html|htm)$");//多页面
-let appJsList = chunkList(resolvePath('src/pages'),"(.+)\\.+(js|jsx|ts)$");
+//1⃣️可在public中添加多个html(多页面)
+//2⃣️可在html名字会与src/pages下(js|jsx|ts)后缀的文件严格匹配，作文页面的主入口文件
+let appHtmlList = chunkList(resolvePath('public'),"(.+)\\.+(html|htm)$");
+/**
+ *@return [Array]
+ *[
+ * {name: 'index', path: ${File absolute path} },{'index2': File absolute path }, ...
+ * ]
+ * 但是在src下存在默认的index.js 为主要页面(可作为单页面和多页面首页)
+ */
+let appJsList = [{name: 'index',path: resolve(process.cwd(),'src/index.js')}]
+								.concat(chunkList(resolvePath('src/pages'),"(.+)\\.+(js|jsx|ts)$"));
 
 function chunkList(path,pattern){
 		let fileResults = [];

@@ -48,5 +48,6 @@ module.exports = (plugins) => {
     })
 	])
 	setPlugins = plugins ? deepAssign({},setPlugins) : setPlugins;
+
 	return setPlugins;
 }
