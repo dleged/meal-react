@@ -154,6 +154,22 @@ module.exports = () => {
 					}
 				])
 		},
+		// {
+		// 	test: /\.css$/,
+		// 	include: paths.appSrc,
+		// 	use:[
+		// 		{
+		// 			loader: LOADERS['CSS_LOADER'],
+		// 			options: {
+		// 				sourceMap: true
+		// 			}
+		// 		},
+		// 		{
+		// 			loader: LOADERS['POSTCSS_LOADER'],
+		// 			options: Object.assign({sourceMap: true},withPostcss())
+		// 		}
+		// 	]
+		// },
     {
       test: /\.css$/,
       use: [
