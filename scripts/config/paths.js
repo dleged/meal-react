@@ -24,13 +24,18 @@ let appHtmlList = chunkList(resolvePath('public'),"(.+)\\.+(html|htm)$");
  * ]
  * 但是在src下存在默认的index.js 为主要页面(可作为单页面和多页面首页)
  */
-let appJsList = [{name: 'index',path: resolve(process.cwd(),'src/index.js')}]
-								.concat(chunkList(resolvePath('src/pages'),"(.+)\\.+(js|jsx|ts)$"));
+let appJsList = (function(){
+	if(appHtmlList.length == 1){//单页面
+		return [{name: 'index',path: resolve(process.cwd(),'src/index.js')}];
+	}else{
+		return [{name: 'index',path: resolve(process.cwd(),'src/index.js')}]
+						.concat(chunkList(resolvePath('src/pages'),"(.+)\\.+(js|jsx|ts)$"));
+	}
+})()
 
 function chunkList(path,pattern){
 		let fileResults = [];
 		let files = readdirSync(path);//读取path路径下的文件夹和文件;
-		console.log(files);
 		let reg = new RegExp(pattern);
 		files.forEach(fileName => {
 			if(fileName == 'components') return;//过滤掉pages下作为组件目录的components文件夹
@@ -69,6 +74,7 @@ module.exports = {
 	appPublic: resolvePath('public'),
 	appSrc: resolvePath('src'),
 	appBuild: resolvePath('dist'),
+	appBuildPath: 'dist',
 	appHtmlList,
 	appJsList,
   appPackageJson: resolvePath('package.json'),
