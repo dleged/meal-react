@@ -3,67 +3,9 @@ const fs = require('fs');
 const autoprefixer = require('autoprefixer');
 const paths = require('./paths');
 const deepAssign = require('deep-assign');
-const URL_LOADER_LIMIT = 8192;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const URL_LOADER_LIMIT = 1111118192;
 
-function getBabelConfig(){
-	let babelConfig = {
-		presets: [
-			require.resolve('@babel/preset-env'),
-			{
-				targets: {
-					browsers: [
-						'last 2 versions',
-						'Firefox ESR',
-						'> 1%',
-						'ie >= 9',
-						'iOS >= 8',
-						'Android >= 4',
-					],
-				}
-			},
-			require.resolve('@babel/preset-react'),
-      [require.resolve('@babel/preset-stage-0'), {options: {decoratorsLegacy: true }}],
-		],
-		dev: {
-			development: {
-				plugins: [
-	        require.resolve('@babel/plugin-transform-runtime'),
-	        {
-	          helpers: false,
-	          polyfill: true,
-	          regenerator: true,
-	          moduleName: 'babel-runtime'
-	        }
-				]
-			},
-			production: {
-				plugins: [
-					require.resolve('babel-plugin-transform-es2015-object-super'),
-		      [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
-		      [
-		        require.resolve('@babel/plugin-proposal-class-properties'),
-		        { loose: true },
-		      ],
-		      [
-		        require.resolve('@babel/plugin-transform-runtime'),
-		        {
-		          polyfill: true,
-		          regenerator: true,
-		          moduleName: 'babel-runtime',
-		        },
-		      ]
-				]
-			}
-		}
-	}
-
-	let cwd = process.cwd();
-	let babelrcFilePath = path.resolve(cwd,'.babelrc');
-	if(fs.existsSync(babelrcFilePath)){
-		babelConfig = require(babelrcFilePath);
-	}
-	return babelConfig;
-}
 
 function withCssHotLoader(loaders){
 	if(process.env.NODE_ENV != 'production'){
@@ -114,7 +56,7 @@ module.exports = () => {
 			test: /\.(scss|sass)$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
-				LOADERS['STYLE_LOADER'],
+			MiniCssExtractPlugin.loader,
 				{
 					loader: LOADERS['CSS_LOADER'],
 					options: {
@@ -139,15 +81,9 @@ module.exports = () => {
 			test: /\.less$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
-					LOADERS['STYLE_LOADER'],
+					MiniCssExtractPlugin.loader,
 					{
-						loader: LOADERS['CSS_LOADER'],
-						options: {
-							modules: true,
-							camelCase: true,
-							localIdentName: '[path][name]__[local]--[hash:base64:5]',
-							sourceMap: true
-						}
+						loader: LOADERS['CSS_LOADER']
 					},
 					{
 						loader: LOADERS['POSTCSS_LOADER'],
@@ -156,7 +92,8 @@ module.exports = () => {
 					{
 						loader: LOADERS['LESS_LOADER'],
 						options: {
-							sourceMap: true
+							sourceMap: true,
+							modules: true
 						}
 					}
 				])
@@ -164,7 +101,7 @@ module.exports = () => {
     {
       test: /\.css$/,
       use: [
-        LOADERS['STYLE_LOADER'],
+        MiniCssExtractPlugin.loader,
         {
           loader:  LOADERS['CSS_LOADER'],
           options: {
@@ -180,14 +117,7 @@ module.exports = () => {
 			include: paths.appSrc,
 			exclude: paths.appNodeModules,
 			use: {
-        loader: LOADERS['BABEL_LOADER'],
-				options: {
-					presets: ['react','stage-0','es2015'],
-          plugins: [
-						'transform-class-properties',
-            [  "import",{libraryName: "antd", style: 'css'}] // antd按需加载
-          ]
-        }
+        loader: LOADERS['BABEL_LOADER']
 			}
 		},
 		// extra url loader usage
@@ -197,7 +127,7 @@ module.exports = () => {
       options: {
         limit: URL_LOADER_LIMIT,
         minetype: 'application/font-woff',
-        name: 'static/assets/[hash].[ext]',
+        name: 'static/assets/[hash:4].[ext]',
       },
     },
     {
@@ -206,7 +136,7 @@ module.exports = () => {
       options: {
         limit: URL_LOADER_LIMIT,
         minetype: 'application/octet-stream',
-        name: 'static/assets/[hash].[ext]',
+        name: 'static/assets/[hash:4].[ext]',
       },
     },
     {
@@ -215,7 +145,7 @@ module.exports = () => {
       options: {
         limit: URL_LOADER_LIMIT,
         minetype: 'application/vnd.ms-fontobject',
-        name: 'static/assets/[hash].[ext]',
+        name: 'static/assets/[hash:4].[ext]',
       },
     },
     {
@@ -224,7 +154,7 @@ module.exports = () => {
       options: {
         limit: URL_LOADER_LIMIT,
         minetype: 'image/svg+xml',
-        name: 'static/assets/[hash].[ext]',
+        name: 'static/assets/[hash:4].[ext]',
       },
     },
     {
@@ -232,7 +162,7 @@ module.exports = () => {
       loader: LOADERS['URL_LOADER'],
       options: {
         limit: URL_LOADER_LIMIT,
-        name: 'static/assets/[hash].[ext]',
+        name: 'static/assets/[hash:4].[ext]',
       },
     }
 	]
