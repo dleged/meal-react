@@ -34,7 +34,7 @@
     "style-loader": "^0.21.0",
     "webpack": "^4.14.0",
     "less": "2.7.3",
-    "less-loader": "^4.1.0",
+    "less-loader": "^4.1.0"
   },
   "dependencies": {
     "react": "^16.4.1",
