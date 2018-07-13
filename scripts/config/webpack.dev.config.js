@@ -5,10 +5,8 @@ const rules = require('./rules');
 const baseConfig = require('./webpack.basic.config');
 
 const env = process.env;
-
 const plugins = [new webpack.HotModuleReplacementPlugin()];
 const chalk = require('chalk');
-
 
 module.exports = Object.assign(baseConfig, {
     devtool: 'cheap-module-source-map',
