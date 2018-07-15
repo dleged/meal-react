@@ -9,7 +9,6 @@ let entry = {};
 paths.appJsList.forEach((item)=>{
   //验证存在与html同名的javascript文件
     entry[item.name] = [
-        require.resolve('./polyfills'),
         item.path
     ];
 });
