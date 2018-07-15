@@ -1,0 +1,16 @@
+{
+  "presets":["stage-0","es2015","react"],
+  "plugins": [
+    ["transform-runtime"],
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }],
+    ["transform-class-properties"],
+    [
+      "babel-plugin-module-resolver",
+      {
+        "alias": {
+          "components": "./src/components",
+        }
+      },
+    ]
+  ]
+}
