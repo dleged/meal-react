@@ -2,6 +2,7 @@
  * 所有路径相关配置依赖
  */
 
+//14
 'user strict';
 
 const {realpathSync,readdirSync,statSync} = require('fs');
