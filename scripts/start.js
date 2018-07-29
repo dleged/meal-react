@@ -90,7 +90,7 @@ choosePort(HOST, DEFAULT_PORT)
         clearConsole();
       }
       console.log(chalk.cyan('Starting the development server...\n'));
-      openBrowser(urls.localUrlForBrowser+'/index.html');
+      openBrowser(urls.localUrlForBrowser+'index.html');
     });
 
     ['SIGINT', 'SIGTERM'].forEach(function(sig) {
