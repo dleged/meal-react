@@ -6,6 +6,7 @@ const deepAssign = require('deep-assign');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const URL_LOADER_LIMIT = 20000;
 
+let proEnv = process.env.BABEL_ENV;
 
 function withCssHotLoader(loaders){
 	if(process.env.NODE_ENV != 'production'){
@@ -60,7 +61,9 @@ module.exports = () => {
 				{
 					loader: LOADERS['CSS_LOADER'],
 					options: {
-						sourceMap: true
+						sourceMap: true,
+						modules: true,
+						localIdentName: proEnv == 'development' ? '[local]' : '[hash:base64:5]',
 					}
 				},
 				{
@@ -70,9 +73,7 @@ module.exports = () => {
 				{
 					loader: LOADERS['SASS_LOADER'],
 					options: {
-						sourceMap: true,
-						modules: true,
-       			localIdentName: '[path][name]__[local]--[hash:base64:5]'
+						sourceMap: true
 					}
 				}
 			])
@@ -84,6 +85,10 @@ module.exports = () => {
 					MiniCssExtractPlugin.loader,
 					{
 						loader: LOADERS['CSS_LOADER'],
+						options: {
+							modules: true,
+							localIdentName: proEnv == 'development' ? '[local]' : '[hash:base64:5]',
+						}
 					},
 					{
 						loader: LOADERS['POSTCSS_LOADER'],
@@ -102,6 +107,8 @@ module.exports = () => {
           loader:  LOADERS['CSS_LOADER'],
           options: {
             sourceMap: true,
+						modules: true,
+						localIdentName: proEnv == 'development' ? '[local]' : '[hash:base64:5]',
             importLoaders: 1,
           },
         },
