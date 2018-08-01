@@ -10,9 +10,6 @@ let setings = {};
 let output = {
 	 path: paths.appBuild,
 	 filename: 'static/js/[name]_[hash:8].js',
-	 // filename: function(){
-		//  return '/static/js/[name_hash:8].js'
-	 // }
 	 chunkFilename: 'static/js/[name].chunk.js'
 };
 let modules = {

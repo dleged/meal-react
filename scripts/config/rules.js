@@ -3,13 +3,15 @@ const fs = require('fs');
 const autoprefixer = require('autoprefixer');
 const paths = require('./paths');
 const deepAssign = require('deep-assign');
-const URL_LOADER_LIMIT = 2000;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const URL_LOADER_LIMIT = 20000;
+
 
 function withCssHotLoader(loaders){
 	if(process.env.NODE_ENV != 'production'){
 		return [LOADERS['CSS_HOT_LOADER']].concat(loaders);
 	}
-	return loasers;
+	return loaders;
 }
 
 function withPostcss(){
@@ -54,6 +56,7 @@ module.exports = () => {
 			test: /\.(scss|sass)$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
+			MiniCssExtractPlugin.loader,
 				{
 					loader: LOADERS['CSS_LOADER'],
 					options: {
@@ -78,25 +81,23 @@ module.exports = () => {
 			test: /\.less$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
+					MiniCssExtractPlugin.loader,
 					{
-						loader: LOADERS['CSS_LOADER']
+						loader: LOADERS['CSS_LOADER'],
 					},
 					{
 						loader: LOADERS['POSTCSS_LOADER'],
 						options: Object.assign({sourceMap: true},withPostcss())
 					},
 					{
-						loader: LOADERS['LESS_LOADER'],
-						options: {
-							sourceMap: true,
-							modules: true
-						}
+						loader: LOADERS['LESS_LOADER']
 					}
 				])
 		},
     {
       test: /\.css$/,
       use: [
+        MiniCssExtractPlugin.loader,
         {
           loader:  LOADERS['CSS_LOADER'],
           options: {
