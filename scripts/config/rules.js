@@ -3,9 +3,7 @@ const fs = require('fs');
 const autoprefixer = require('autoprefixer');
 const paths = require('./paths');
 const deepAssign = require('deep-assign');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const URL_LOADER_LIMIT = 1111118192;
-
+const URL_LOADER_LIMIT = 2000;
 
 function withCssHotLoader(loaders){
 	if(process.env.NODE_ENV != 'production'){
@@ -56,7 +54,6 @@ module.exports = () => {
 			test: /\.(scss|sass)$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
-			MiniCssExtractPlugin.loader,
 				{
 					loader: LOADERS['CSS_LOADER'],
 					options: {
@@ -81,7 +78,6 @@ module.exports = () => {
 			test: /\.less$/,
 			include: paths.appSrc,
 			use: withCssHotLoader([
-					MiniCssExtractPlugin.loader,
 					{
 						loader: LOADERS['CSS_LOADER']
 					},
@@ -101,7 +97,6 @@ module.exports = () => {
     {
       test: /\.css$/,
       use: [
-        MiniCssExtractPlugin.loader,
         {
           loader:  LOADERS['CSS_LOADER'],
           options: {

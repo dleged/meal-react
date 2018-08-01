@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 let withProductionEnv = process.env.NODE_ENV === 'production' ? true : false;
 
@@ -41,6 +41,12 @@ module.exports = (plugins) => {
 		  maxChunks: 5,
 		  minChunkSize: 1000
 		}),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
+    }),
     new CaseSensitivePathsPlugin(),
     new ExtractTextWebpackPlugin({
       filename: '[name]_[hash:8].css',
