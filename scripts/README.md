@@ -9,10 +9,6 @@
 	.webpackrc > webpack.webpackrc.entry
 ```
 
-
-
-
-
 ```
 my-app
 ├── README.md
@@ -22,15 +18,14 @@ my-app
 ├── config
 │   ├── entry.js
 │   ├── paths.js
-│   └── plugins.js
-│   ├── polyfills.js
+│   ├── plugins.js
 │   └── rules.js
 └── src
-    ├── App.css
-    ├── App.js
-    ├── App.test.js
-    ├── index.css
-    ├── index.js
-    ├── logo.svg
-    └── registerServiceWorker.js
+    ├── assets
+    ├── componts
+    ├── pages
+    ├── services
+    ├── utils
+    ├── app.js
+    └── index.js
 ```
