@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import styles from './welcome.css';
+import styles from './welcome.less';
 
 console.log(styles);
 

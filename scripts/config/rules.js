@@ -72,9 +72,7 @@ module.exports = () => {
 				},
 				{
 					loader: LOADERS['SASS_LOADER'],
-					options: {
-						sourceMap: true
-					}
+				
 				}
 			])
 		},
