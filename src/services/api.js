@@ -1,12 +1,5 @@
 import axios from './axios';
 
-
-/*
-*首页-列表
-*@query {[num]} page [页码]
-*@return Promise
-*/
-
 /**
  * [fetchHomeList description]
  * @param
