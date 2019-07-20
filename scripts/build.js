@@ -1,8 +1,3 @@
-/**
- * 构建项目生成 dist ，根据传入的路径地址，按照 ICE page 的格则搜寻代码，并启动编译服务
- * @param {String} cwd 项目目录
- * @param {Object} options 命令行参数
- */
 
 process.env.NODE_ENV = 'production';
 const gulp = require('gulp');
@@ -11,7 +6,7 @@ const webpack = require('webpack');
 const paths = require('./config/paths');
 const entries = require('./config/entry');
 const getWebpackConfigProd = require('./config/webpack.pro.config');
-// const npmInstall = require('./helpers/npmInstall');
+const npmInstall = require('./helpers/npmInstall');
 
 (function() {
   const cwd = process.cwd();
@@ -33,9 +28,9 @@ const getWebpackConfigProd = require('./config/webpack.pro.config');
     rimraf(webpackConfig.output.path, done);
   });
 
-  // gulp.task('install', () => {
-  //   return npmInstall();
-  // });
+  gulp.task('install', () => {
+    return npmInstall();
+  });
 
   // webpack 打包工作流
   gulp.task('webpack', (done) => {
